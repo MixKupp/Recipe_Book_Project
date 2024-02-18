@@ -11,7 +11,7 @@ public class main {
     }
 
     public static void main(String[] args) {
-        //System
+        // System
         boolean obj = true;
         clearScreen();
         Scanner input = new Scanner(System.in);
@@ -34,35 +34,47 @@ public class main {
             }
         }
         /////////////////////////////////////////////////////////////////
-        obj = true;
         Scanner ip_pass = new Scanner(System.in);
-        while (obj == true) {
+        while (obj == false) {
             System.out.print("Pass :");
             String input_pass = ip_pass.nextLine();
-            //Check input
+            // Check input
             if (input_pass.isEmpty()) {
                 clearScreen();
                 System.out.println("Welcome To Recipe Book Program\n");
                 invalid();
-                System.out.print("Register\nID :" + user.getID()+"\n");
+                System.out.print("Register\nID :" + user.getID() + "\n");
             } else if (input_pass != null) {
                 user.setPass(input_pass);
-                obj = false;
+                obj = true;
             }
         }
         //////////////////////////////////////////////////////////////////
-        System.out.println("Role Header(y/n): ");
-        char input_role = input.next().charAt(0);
-        if (input_role == 'y' || input_role == 'Y') {
-            user.setRole(true);
-        } else if (input_role == 'n' || input_role == 'N') {
-            user.setRole(false);
-        } else {
-            invalid();
+        while (obj == true) {
+            System.out.println("Role Header(y/n): ");
+            char input_role = input.next().charAt(0);
+            if (input_role == 'y' || input_role == 'Y') {
+                user.setRole(true);
+                obj = false;
+            } else if (input_role == 'n' || input_role == 'N') {
+                user.setRole(false);
+                obj = false;
+            } else {
+                clearScreen();
+                System.out.println("Welcome To Recipe Book Program\n");
+                invalid();
+                System.out.print("Register\nID :" + user.getID() + "\nPass :"+ user.getPass()+"\n");
+            }
         }
+
         //////////////////////// Login account end////////////////////////
         clearScreen();
         //////////////////////// Program start////////////////////////
 
+        System.out.println("Welcome To Recipe Book Program\nChoose the option\n1.Add recipe\n2.View recipe\n3.Scarch recipe\n4.Remove recipe\n5.Edit recipe");
+        int input_switch = input.nextInt();
+        while(obj == false){
+            
+        }
     }
 }
