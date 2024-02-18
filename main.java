@@ -71,10 +71,17 @@ public class main {
         clearScreen();
         //////////////////////// Program start////////////////////////
 
-        System.out.println("Welcome To Recipe Book Program\nChoose the option\n1.Add recipe\n2.View recipe\n3.Scarch recipe\n4.Remove recipe\n5.Edit recipe");
+        System.out.println("Welcome To Recipe Book Program\nChoose the option\n1.Add recipe\n2.View recipe\n3.Scarch recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program");
         int input_switch = input.nextInt();
         while(obj == false){
+            switch (input_switch) {
+                case 1:
+                    
+                    break;
             
+                default:
+                    break;
+            }
         }
     }
 }
