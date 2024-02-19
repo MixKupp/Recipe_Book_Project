@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 
 public class main {
     public static void clearScreen() {
@@ -10,12 +11,12 @@ public class main {
         System.out.println("Invalid Input\n");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         // System
         boolean obj = true;
         clearScreen();
         Scanner input = new Scanner(System.in);
-
+  
         //////////////////////// Login account start////////////////////////
         System.out.println("Welcome To Recipe Book Program");
         Student user = new Student();
@@ -66,19 +67,31 @@ public class main {
                 System.out.print("Register\nID :" + user.getID() + "\nPass :"+ user.getPass()+"\n");
             }
         }
-
+        
         //////////////////////// Login account end////////////////////////
         clearScreen();
+        //Build csv file 
+        
         //////////////////////// Program start////////////////////////
 
-        System.out.println("Welcome To Recipe Book Program\nChoose the option\n1.Add recipe\n2.View recipe\n3.Scarch recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program");
-        int input_switch = input.nextInt();
         while(obj == false){
+            System.out.print("Welcome To Recipe Book Program\nChoose the option\n1.Add recipe\n2.View recipe\n3.Scarch recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
+            int input_switch = input.nextInt();
             switch (input_switch) {
                 case 1:
                     
                     break;
-            
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    clearScreen();
+                    System.exit(0);
                 default:
                     break;
             }
