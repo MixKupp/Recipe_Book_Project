@@ -1,6 +1,7 @@
 import java.util.*;
 import java.io.*;
 
+//Main class
 public class main {
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
@@ -50,6 +51,7 @@ public class main {
                 obj = true;
             }
         }
+
         //////////////////////////////////////////////////////////////////
         while (obj == true) {
             System.out.println("Role Header(y/n): ");
