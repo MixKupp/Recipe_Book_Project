@@ -48,4 +48,7 @@ public class Student {
         }
         return print;
     }
+    public boolean role(){
+        return this.role;
+    }
 }

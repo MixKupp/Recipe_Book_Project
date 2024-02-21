@@ -1,5 +1,9 @@
 import java.util.*;
+
+import javax.annotation.processing.FilerException;
+
 import java.io.*;
+
 
 //Main class
 public class main {
@@ -9,94 +13,142 @@ public class main {
     }
 
     public static void invalid() {
-        System.out.println("Invalid Input\n");
+        System.out.println("Invalid input please try again.\n");
     }
 
-    public static void main(String[] args){
+    private static void appendCSVLine(PrintWriter writer, String[] data) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < data.length; i++) {
+            sb.append(data[i]);
+            if (i < data.length - 1) {
+                sb.append(",");
+            }
+        }
+        writer.println(sb.toString());
+    }
+
+    public static void main(String[] args) throws FileNotFoundException{
         // System
         boolean obj = true;
         clearScreen();
         Scanner input = new Scanner(System.in);
-  
+
+        File acc = new File("D:\\662115034\\Intro project\\Recipe_Book_Project\\data\\Account_ID.csv");
+        PrintWriter writer = new PrintWriter(acc);
+        Scanner sc_acc = new Scanner(acc);
+        ArrayList<Student> account_list = new ArrayList<>(); 
+
         //////////////////////// Login account start////////////////////////
-        System.out.println("Welcome To Recipe Book Program");
         Student user = new Student();
         Scanner ip_user = new Scanner(System.in);
-        while (obj == true) {
-            System.out.print("Register\nID :");
-            String input_user = ip_user.nextLine();
-            // Check input
-            if (input_user.isEmpty()) {
-                clearScreen();
-                System.out.println("Welcome To Recipe Book Program\n");
-                invalid();
-            } else if (input_user != null) {
-                user.setID(input_user);
-                obj = false;
-            }
-        }
-        /////////////////////////////////////////////////////////////////
         Scanner ip_pass = new Scanner(System.in);
-        while (obj == false) {
-            System.out.print("Pass :");
-            String input_pass = ip_pass.nextLine();
-            // Check input
-            if (input_pass.isEmpty()) {
-                clearScreen();
-                System.out.println("Welcome To Recipe Book Program\n");
-                invalid();
-                System.out.print("Register\nID :" + user.getID() + "\n");
-            } else if (input_pass != null) {
-                user.setPass(input_pass);
-                obj = true;
-            }
-        }
+        Scanner space = new Scanner(System.in);
 
-        //////////////////////////////////////////////////////////////////
         while (obj == true) {
-            System.out.println("Role Header(y/n): ");
-            char input_role = input.next().charAt(0);
-            if (input_role == 'y' || input_role == 'Y') {
-                user.setRole(true);
-                obj = false;
-            } else if (input_role == 'n' || input_role == 'N') {
-                user.setRole(false);
-                obj = false;
-            } else {
-                clearScreen();
-                System.out.println("Welcome To Recipe Book Program\n");
-                invalid();
-                System.out.print("Register\nID :" + user.getID() + "\nPass :"+ user.getPass()+"\n");
-            }
-        }
-        
-        //////////////////////// Login account end////////////////////////
-        clearScreen();
-        //Build csv file 
-        
-        //////////////////////// Program start////////////////////////
-
-        while(obj == false){
-            System.out.print("Welcome To Recipe Book Program\nChoose the option\n1.Add recipe\n2.View recipe\n3.Scarch recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
-            int input_switch = input.nextInt();
-            switch (input_switch) {
+            System.out.print("Welcome To Recipe Book Program.\n1.Register.\n2.Login.(release soon)\n3.Exit.\n\n> ");
+            int input_switch1 = input.nextInt();
+            switch (input_switch1) {
+                //case 1
                 case 1:
-                    
-                    break;
+                    clearScreen();
+                    while (obj == true) {
+                        System.out.print(">> Register <<\nID :");
+                        String input_user = ip_user.nextLine();
+                        user.setID(input_user);
+
+                        System.out.print("Pass :");
+                        String input_pass = ip_pass.nextLine();
+                        user.setPass(input_pass);
+                        
+                        System.out.println("> Role Header(y/n): ");
+                        char input_role = input.next().charAt(0);
+                        if (input_role == 'y' || input_role == 'Y') {
+                            user.setRole(true);
+                        } else if (input_role == 'n' || input_role == 'N') {
+                            user.setRole(false);
+                        }
+                        if (input_user.isEmpty() && input_pass.isEmpty()){
+                            System.out.print("\nPlease enter user & pass input try again.\n\nEnter x for try again.\n");
+                            String sp = space.nextLine();
+                            clearScreen();
+                        }
+                        else if (input_user.isEmpty()) {
+                            System.out.print("\nPlease enter user input try again.\n\nEnter x for try again.\n");
+                            String sp = space.nextLine();
+                            clearScreen();
+                        }
+                        else if (input_pass.isEmpty()) {
+                            System.out.print("\nPlease enter pass input try again.\n\nEnter x for try again.\n");
+                            String sp = space.nextLine();
+                            clearScreen();
+                        }
+                        else if (input_user != null && input_pass != null){
+                            clearScreen();
+                            System.out.println("Register success\n");
+                            obj = false;
+                        }
+                    }
+                // case 2
                 case 2:
+                    clearScreen();
                     break;
+                // case 3
                 case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
                     clearScreen();
                     System.exit(0);
                 default:
-                    break;
+                    clearScreen();
+                    invalid();
             }
         }
+
+        //////////////////////// Login account end////////////////////////
+        obj =true;
+        // Build csv file
+
+        //////////////////////// Program start////////////////////////
+        if (user.role() == true){
+            while (obj == true) {
+                System.out.print("Hello "+user.getID()+"\n\nChoose the option\n\n1.Add recipe\n2.View recipe\n3.Scarch recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
+                int input_switch2 = input.nextInt();
+                switch (input_switch2) {
+                    case 1:
+    
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        clearScreen();
+                        System.exit(0);
+                    default:
+                        break;
+                }
+            }
+        }
+        else if(user.role() == false){
+            while (obj == true) {
+                System.out.print("Hello "+user.getID()+"\n\nChoose the option\n\n1.View recipe\n2.Scarch recipe\n3.Exit Program\n\n>>> ");
+                int input_switch2 = input.nextInt();
+                switch (input_switch2) {
+                    case 1:
+    
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        clearScreen();
+                        System.exit(0);
+                    default:
+                        break;
+                }
+            }
+        }
+        
     }
 }
