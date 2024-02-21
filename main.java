@@ -4,7 +4,6 @@ import javax.annotation.processing.FilerException;
 
 import java.io.*;
 
-
 //Main class
 public class main {
     public static void clearScreen() {
@@ -16,27 +15,12 @@ public class main {
         System.out.println("Invalid input please try again.\n");
     }
 
-    private static void appendCSVLine(PrintWriter writer, String[] data) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < data.length; i++) {
-            sb.append(data[i]);
-            if (i < data.length - 1) {
-                sb.append(",");
-            }
-        }
-        writer.println(sb.toString());
-    }
-
-    public static void main(String[] args) throws FileNotFoundException{
+    public static void main(String[] args) {
         // System
         boolean obj = true;
         clearScreen();
         Scanner input = new Scanner(System.in);
-
-        File acc = new File("D:\\662115034\\Intro project\\Recipe_Book_Project\\data\\Account_ID.csv");
-        PrintWriter writer = new PrintWriter(acc);
-        Scanner sc_acc = new Scanner(acc);
-        ArrayList<Student> account_list = new ArrayList<>(); 
+        
 
         //////////////////////// Login account start////////////////////////
         Student user = new Student();
@@ -48,7 +32,7 @@ public class main {
             System.out.print("Welcome To Recipe Book Program.\n1.Register.\n2.Login.(release soon)\n3.Exit.\n\n> ");
             int input_switch1 = input.nextInt();
             switch (input_switch1) {
-                //case 1
+                // case 1
                 case 1:
                     clearScreen();
                     while (obj == true) {
@@ -59,7 +43,7 @@ public class main {
                         System.out.print("Pass :");
                         String input_pass = ip_pass.nextLine();
                         user.setPass(input_pass);
-                        
+
                         System.out.println("> Role Header(y/n): ");
                         char input_role = input.next().charAt(0);
                         if (input_role == 'y' || input_role == 'Y') {
@@ -67,28 +51,25 @@ public class main {
                         } else if (input_role == 'n' || input_role == 'N') {
                             user.setRole(false);
                         }
-                        if (input_user.isEmpty() && input_pass.isEmpty()){
+                        if (input_user.isEmpty() && input_pass.isEmpty()) {
                             System.out.print("\nPlease enter user & pass input try again.\n\nEnter x for try again.\n");
                             String sp = space.nextLine();
                             clearScreen();
-                        }
-                        else if (input_user.isEmpty()) {
+                        } else if (input_user.isEmpty()) {
                             System.out.print("\nPlease enter user input try again.\n\nEnter x for try again.\n");
                             String sp = space.nextLine();
                             clearScreen();
-                        }
-                        else if (input_pass.isEmpty()) {
+                        } else if (input_pass.isEmpty()) {
                             System.out.print("\nPlease enter pass input try again.\n\nEnter x for try again.\n");
                             String sp = space.nextLine();
                             clearScreen();
-                        }
-                        else if (input_user != null && input_pass != null){
+                        } else if (input_user != null && input_pass != null) {
                             clearScreen();
                             System.out.println("Register success\n");
                             obj = false;
                         }
                     }
-                // case 2
+                    // case 2
                 case 2:
                     clearScreen();
                     break;
@@ -103,17 +84,18 @@ public class main {
         }
 
         //////////////////////// Login account end////////////////////////
-        obj =true;
+        obj = true;
         // Build csv file
 
         //////////////////////// Program start////////////////////////
-        if (user.role() == true){
+        if (user.role() == true) {
             while (obj == true) {
-                System.out.print("Hello "+user.getID()+"\n\nChoose the option\n\n1.Add recipe\n2.View recipe\n3.Scarch recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
+                System.out.print("Hello " + user.getID()
+                        + "\n\nChoose the option\n\n1.Add recipe\n2.View recipe\n3.Scarch recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
                 int input_switch2 = input.nextInt();
                 switch (input_switch2) {
                     case 1:
-    
+
                         break;
                     case 2:
                         break;
@@ -130,15 +112,19 @@ public class main {
                         break;
                 }
             }
-        }
-        else if(user.role() == false){
+        } else if (user.role() == false) {
             while (obj == true) {
-                System.out.print("Hello "+user.getID()+"\n\nChoose the option\n\n1.View recipe\n2.Scarch recipe\n3.Exit Program\n\n>>> ");
+                System.out.print("Hello " + user.getID()
+                        + "\n\nChoose the option\n\n1.View recipe\n2.Scarch recipe\n3.Exit Program\n\n>>> ");
                 int input_switch2 = input.nextInt();
                 switch (input_switch2) {
                     case 1:
-    
+                        clearScreen();
+                        
+                        System.out.println("Press x to contiue");
+                        Scanner spp = new Scanner(System.in);
                         break;
+
                     case 2:
                         break;
                     case 3:
@@ -149,6 +135,6 @@ public class main {
                 }
             }
         }
-        
+
     }
 }
