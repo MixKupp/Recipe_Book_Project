@@ -20,7 +20,9 @@ public class main {
         boolean obj = true;
         clearScreen();
         Scanner input = new Scanner(System.in);
+        File file_acc = new File("data" + File.separator + "Account_ID.csv");
         File file = new File("data" + File.separator + "Recipe_Book.csv");
+        Scanner scanner_acc = new Scanner(file_acc);
         Scanner scanner = new Scanner(file);
         ArrayList<Recipe> recipeList = new ArrayList<>();
 
@@ -45,12 +47,13 @@ public class main {
                         System.out.print("Pass :");
                         String input_pass = ip_pass.nextLine();
                         user.setPass(input_pass);
+                        clearScreen();
 
-                        System.out.println("> Role Header(y/n): ");
-                        char input_role = input.next().charAt(0);
-                        if (input_role == 'y' || input_role == 'Y') {
+                        System.out.print(">> Role <<\n1.Creator\n2.Viewer\n>  ");
+                        int input_role = input.nextInt();
+                        if (input_role == 1) {
                             user.setRole(true);
-                        } else if (input_role == 'n' || input_role == 'N') {
+                        } else if (input_role == 2) {
                             user.setRole(false);
                         }
                         if (input_user.isEmpty() && input_pass.isEmpty()) {
@@ -91,9 +94,9 @@ public class main {
 
         //////////////////////// Program start////////////////////////
         if (user.role() == true) {
+            System.out.print("Hello " + user.getID());
             while (obj == true) {
-                System.out.print("Hello " + user.getID()
-                        + "\n\nChoose the option\n\n1.Add recipe\n2.View recipe\n3.Scarch recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
+                System.out.print("\nChoose the option\n\n1.Add recipe\n2.View recipe\n3.Scarch recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
                 int input_switch2 = input.nextInt();
                 switch (input_switch2) {
                     case 1:
@@ -120,28 +123,10 @@ public class main {
                                     recipe.getCategory() + "| " + recipe.getfoodName() + " -> " + recipe.getRecipe());
                         }
                         System.out.println();
+                        System.out.println("##################################################################");
                         break;
                     case 3:
-                        clearScreen();
-                        scanner.nextLine();
-                        while (scanner.hasNextLine()) {
-                            String dataline = scanner.nextLine();
-
-                            StringTokenizer tokenizer = new StringTokenizer(dataline, ",");
-
-                            String category = tokenizer.nextToken().trim();
-                            String name = tokenizer.nextToken().trim();
-                            String recipe = tokenizer.nextToken().trim();
-
-                            recipeList.add(new Recipe(category, name, recipe));
-                        }
-                        scanner.close();
-
-                        for (Recipe recipe : recipeList) {
-                            System.out.println(
-                                    recipe.getCategory() + "| " + recipe.getfoodName() + " -> " + recipe.getRecipe());
-                        }
-                        System.out.println();
+                        
                         break;
                     case 4:
                         break;
@@ -155,9 +140,9 @@ public class main {
                 }
             }
         } else if (user.role() == false) {
+            System.out.print("Hello " + user.getID());
             while (obj == true) {
-                System.out.print("Hello " + user.getID()
-                        + "\n\nChoose the option\n\n1.View recipe\n2.Scarch recipe\n3.Exit Program\n\n>>> ");
+                System.out.print("\nChoose the option\n\n1.View recipe\n2.Scarch recipe\n3.Exit Program\n\n>>> ");
                 int input_switch2 = input.nextInt();
                 switch (input_switch2) {
                     case 1:
@@ -181,10 +166,12 @@ public class main {
                                     recipe.getCategory() + "| " + recipe.getfoodName() + " -> " + recipe.getRecipe());
                         }
                         System.out.println();
+                        System.out.println("##################################################################");
                         break;
 
                     case 2:
                         clearScreen();
+                        break;
                     case 3:
                         clearScreen();
                         System.exit(0);

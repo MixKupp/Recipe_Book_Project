@@ -38,7 +38,7 @@ public class Student {
     public String getRole(){
         String print = ""; 
         if (role == true){
-            print = "Header";
+            print = "Creator";
         }
         else if (role == false){
             print = "Viewer";
