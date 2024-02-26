@@ -96,12 +96,56 @@ public class main {
         if (user.role() == true) {
             System.out.print("Hello " + user.getID());
             while (obj == true) {
-                System.out.print("\nChoose the option\n\n1.Add recipe\n2.View recipe\n3.Scarch recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
+                System.out.print(
+                        "\nChoose the option\n\n1.Add recipe\n2.View recipe\n3.Scarch recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
                 int input_switch2 = input.nextInt();
                 switch (input_switch2) {
                     case 1:
-                        
-                        break;
+                        clearScreen();
+                        scanner.nextLine();
+                        // Writing to the file
+                        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
+                            while (obj == true) {
+                                Scanner ct = new Scanner(System.in);
+                                Scanner nm = new Scanner(System.in);
+                                Scanner rc = new Scanner(System.in);
+                                String cc ="";
+                                System.out.println("Choose Category\n1.Appetizer\n2.Main course\n3.Dessert\n4.Drink");
+                                int c = ct.nextInt();
+                                if (c == 1) {
+                                    cc = "Appetizer";
+                                }
+                                else if (c == 2){
+                                    cc = "Main course";
+                                }
+                                else if (c == 3){
+                                    cc = "Dessert";
+                                }
+                                else if (c == 4){
+                                    cc = "Drink";
+                                }
+                                System.out.print(">> Food name :");
+                                String n = nm.nextLine();
+                                System.out.print(">> Recipe :");
+                                String r = rc.nextLine();
+                                if(c > 4 || n.isEmpty() || r.isEmpty()){
+                                    invalid();
+                                }
+                                else{
+                                    bw.newLine();
+                                    bw.write(cc+","+n+","+r);
+                                    clearScreen();
+                                    System.out.println("Data written to the file successfully.\n");
+                                    bw.close();
+                                    obj =false;
+                                }
+                            }
+                            obj = true;
+                            break;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
                     case 2:
                         clearScreen();
                         scanner.nextLine();
@@ -126,7 +170,7 @@ public class main {
                         System.out.println("##################################################################");
                         break;
                     case 3:
-                        
+
                         break;
                     case 4:
                         break;
