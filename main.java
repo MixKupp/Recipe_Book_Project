@@ -100,7 +100,7 @@ public class main {
                 int input_switch2 = input.nextInt();
                 switch (input_switch2) {
                     case 1:
-
+                        
                         break;
                     case 2:
                         clearScreen();
