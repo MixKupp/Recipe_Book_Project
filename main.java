@@ -15,6 +15,33 @@ public class main {
         System.out.println("Invalid input please try again.\n");
     }
 
+    public static void registerAccount(String username, String password,String role) {
+        File file_acc = new File("data" + File.separator + "Account_ID.csv");
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file_acc, true))) {
+            bw.write(username + "," + password+","+role);
+            bw.newLine();
+            System.out.println("Account registered successfully!");
+        } catch (IOException e) {
+            System.err.println("Already have account.");
+        }
+    }
+    
+    private static boolean isValidLogin(String username, String password) {
+        File file_acc = new File("data" + File.separator + "Account_ID.csv");
+        try (BufferedReader br = new BufferedReader(new FileReader(file_acc))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 2 && parts[0].equals(username) && parts[1].equals(password)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
+        return false;
+    }
+
     public static void main(String[] args) throws FileNotFoundException {
         // System
         boolean obj = true;
@@ -33,7 +60,7 @@ public class main {
         Scanner space = new Scanner(System.in);
 
         while (obj == true) {
-            System.out.print("Welcome To Recipe Book Program.\n1.Register.\n2.Login.(release soon)\n3.Exit.\n\n> ");
+            System.out.print("Welcome To Recipe Book Program.\n1.Register.\n2.Login.\n3.Exit.\n\n> ");
             int input_switch1 = input.nextInt();
             switch (input_switch1) {
                 // case 1
@@ -70,6 +97,7 @@ public class main {
                             clearScreen();
                         } else if (input_user != null && input_pass != null) {
                             clearScreen();
+                            registerAccount(user.getID(), user.getPass(),user.getRole());
                             System.out.println("Register success\n");
                             obj = false;
                         }
@@ -77,6 +105,24 @@ public class main {
                     // case 2
                 case 2:
                     clearScreen();
+                    while (obj == true) {
+                        System.out.print(">> Login <<\nID :");
+                        String input_user = ip_user.nextLine();
+                        user.setID(input_user);
+
+                        System.out.print("Pass :");
+                        String input_pass = ip_pass.nextLine();
+                        user.setPass(input_pass);
+
+                        if (isValidLogin(input_user, input_pass)) {
+                            System.out.println("Login successful!");
+                            obj = false;
+                        } else {
+                            clearScreen();
+                            System.out.println("Invalid username or password try again.");
+                            continue;
+                        }
+                    }
                     break;
                 // case 3
                 case 3:
@@ -129,7 +175,9 @@ public class main {
                                 System.out.print(">> Recipe :");
                                 String r = rc.nextLine();
                                 if(c > 4 || n.isEmpty() || r.isEmpty()){
+                                    clearScreen();
                                     invalid();
+                                    break;
                                 }
                                 else{
                                     bw.newLine();
