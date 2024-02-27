@@ -25,22 +25,6 @@ public class main {
             System.err.println("Already have account.");
         }
     }
-    
-    private static boolean isValidLogin(String username, String password) {
-        File file_acc = new File("data" + File.separator + "Account_ID.csv");
-        try (BufferedReader br = new BufferedReader(new FileReader(file_acc))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length == 2 && parts[0].equals(username) && parts[1].equals(password)) {
-                    return true;
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage());
-        }
-        return false;
-    }
 
     public static void main(String[] args) throws FileNotFoundException {
         // System
@@ -51,6 +35,7 @@ public class main {
         File file = new File("data" + File.separator + "Recipe_Book.csv");
         Scanner scanner_acc = new Scanner(file_acc);
         Scanner scanner = new Scanner(file);
+        Register register = new Register();
         ArrayList<Recipe> recipeList = new ArrayList<>();
 
         //////////////////////// Login account start////////////////////////
@@ -78,10 +63,11 @@ public class main {
 
                         System.out.print(">> Role <<\n1.Creator\n2.Viewer\n>  ");
                         int input_role = input.nextInt();
-                        if (input_role == 1) {
-                            user.setRole(true);
-                        } else if (input_role == 2) {
-                            user.setRole(false);
+                        if(input_role == 1){
+                            user.setRole("Creator");
+                        }
+                        else if (input_role == 2){
+                            user.setRole("Viewer");
                         }
                         if (input_user.isEmpty() && input_pass.isEmpty()) {
                             System.out.print("\nPlease enter user & pass input try again.\n\nEnter x for try again.\n");
@@ -97,7 +83,7 @@ public class main {
                             clearScreen();
                         } else if (input_user != null && input_pass != null) {
                             clearScreen();
-                            registerAccount(user.getID(), user.getPass(),user.getRole());
+                            register.registerAccount(input_user,input_pass,user.getRole());
                             System.out.println("Register success\n");
                             obj = false;
                         }
@@ -114,7 +100,8 @@ public class main {
                         String input_pass = ip_pass.nextLine();
                         user.setPass(input_pass);
 
-                        if (isValidLogin(input_user, input_pass)) {
+                        if (register.login(input_user, input_pass)) {
+                            clearScreen();
                             System.out.println("Login successful!");
                             obj = false;
                         } else {
@@ -139,7 +126,7 @@ public class main {
         // Build csv file
 
         //////////////////////// Program start////////////////////////
-        if (user.role() == true) {
+        if (user.getRole() == "Creator") {
             System.out.print("Hello " + user.getID());
             while (obj == true) {
                 System.out.print(
@@ -231,7 +218,7 @@ public class main {
                         break;
                 }
             }
-        } else if (user.role() == false) {
+        } else if (user.getRole() == "Viewer") {
             System.out.print("Hello " + user.getID());
             while (obj == true) {
                 System.out.print("\nChoose the option\n\n1.View recipe\n2.Scarch recipe\n3.Exit Program\n\n>>> ");

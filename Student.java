@@ -2,15 +2,20 @@
 public class Student {
     private String ID;
     private String pass;
-    private boolean role;
+    private String role;
 
     public Student(){
         this.ID = null;
         this.pass = null;
-        this.role = false;
+        this.role = null;
     }
 
-    public Student(String ID, String pass,boolean role){
+    public Student(String ID, String pass){
+        this.ID = ID;
+        this.pass = pass;
+    }
+
+    public Student(String ID, String pass,String role){
         this.ID = ID;
         this.pass = pass;
         this.role = role;
@@ -24,7 +29,7 @@ public class Student {
         this.pass = pass;
     }
 
-    public void setRole(boolean role){
+    public void setRole(String role){
         this.role = role;
     }
 
@@ -35,20 +40,8 @@ public class Student {
     public String getPass(){
         return this.pass;
     }
+
     public String getRole(){
-        String print = ""; 
-        if (role == true){
-            print = "Creator";
-        }
-        else if (role == false){
-            print = "Viewer";
-        }
-        else{
-            role = false;
-        }
-        return print;
-    }
-    public boolean role(){
         return this.role;
     }
 }
