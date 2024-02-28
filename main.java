@@ -29,6 +29,7 @@ public class main {
             System.err.println("Already have account.");
         }
     }
+
     public static void searchRecipe(String keyword) {
         try (BufferedReader br = new BufferedReader(new FileReader("data" + File.separator + "Recipe_Book.csv"))) {
             String line;
@@ -210,199 +211,228 @@ public class main {
 
         while (obj == true) {
             System.out.print("Welcome To Recipe Book Program.\n1.Register.\n2.Login.\n3.Exit.\n\n> ");
-            int input_switch1 = input.nextInt();
-            switch (input_switch1) {
-                // case 1
-                case 1:
-                    clearScreen();
-                    while (obj == true) {
-                        System.out.print(">> Register <<\nID : ");
-                        String input_user = ip_user.nextLine();
-                        user.setID(input_user);
-
-                        System.out.print("Pass : ");
-                        String input_pass = ip_pass.nextLine();
-                        user.setPass(input_pass);
+            char input_switch1 = input.next().charAt(0);
+            if (input_switch1 == '1' || input_switch1 == '2' || input_switch1 == '3')
+                switch (input_switch1) {
+                    // case 1
+                    case '1':
                         clearScreen();
+                        while (obj == true) {
+                            System.out.print(">> Register <<\nID : ");
+                            String input_user = ip_user.nextLine();
+                            user.setID(input_user);
 
-                        System.out.print(">> Role <<\n1.Creator\n2.Viewer\n>  ");
-                        int input_role = input.nextInt();
-                        if (input_role == 1) {
-                            user.setRole("Creator");
-                        } else if (input_role == 2) {
-                            user.setRole("Viewer");
-                        }
-                        if (input_user.isEmpty() && input_pass.isEmpty()) {
-                            System.out.print("\nPlease enter user & pass input try again.\n\nPress any key for try again.\n");
-                            String sp = space.nextLine();
+                            System.out.print("Pass : ");
+                            String input_pass = ip_pass.nextLine();
+                            user.setPass(input_pass);
                             clearScreen();
-                            continue;
-                        } else if (input_user.isEmpty()) {
-                            System.out.print("\nPlease enter user input try again.\n\nPress any key for try again.\n");
-                            String sp = space.nextLine();
-                            clearScreen();
-                            continue;
-                        } else if (input_pass.isEmpty()) {
-                            System.out.print("\nPlease enter pass input try again.\n\nPress any key for try again.\n");
-                            String sp = space.nextLine();
-                            clearScreen();
-                            continue;
-                        }
-                        if (register.isUsernameExists(input_user)) {
-                            clearScreen();
-                            System.out.println("Username already exists. Please choose a different username.\n");
-                            continue;
-                        }
 
-                        clearScreen();
-                        register.registerAccount(input_user, input_pass, user.getRole());
-                        obj = false;
-                    }
-                    // case 2
-                case 2:
-                    clearScreen();
-                    while (obj == true) {
-                        System.out.print(">> Login <<\nID : ");
-                        String input_user = ip_user.nextLine();
-                        user.setID(input_user);
-
-                        System.out.print("Pass : ");
-                        String input_pass = ip_pass.nextLine();
-                        user.setPass(input_pass);
-
-                        if (register.login(input_user, input_pass)) {
-                            clearScreen();
-                            System.out.println("Login successful!\n");
-                            String role = register.checkRole(input_user, input_pass);
-                            if ("Creator".equals(role)) {
-                                System.out.print("Hello " + user.getID());
-                                while (obj == true) {
-                                    System.out.print(
-                                            "\nChoose the option\n\n1.Add recipe\n2.View recipe\n3.Search recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
-                                    int input_switch2 = input.nextInt();
-                                    switch (input_switch2) {
-                                        case 1:
-                                            clearScreen();
-                                            scanner.nextLine();
-                                            // Writing to the file
-                                            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
-                                                while (obj == true) {
-                                                    Scanner ct = new Scanner(System.in);
-                                                    Scanner nm = new Scanner(System.in);
-                                                    Scanner rc = new Scanner(System.in);
-                                                    String cc = "";
-                                                    System.out.print(
-                                                            "Choose Category\n1.Appetizer\n2.Main course\n3.Dessert\n4.Drink\n\n>> ");
-                                                    int c = ct.nextInt();
-                                                    if (c == 1) {
-                                                        cc = "Appetizer";
-                                                    } else if (c == 2) {
-                                                        cc = "Main course";
-                                                    } else if (c == 3) {
-                                                        cc = "Dessert";
-                                                    } else if (c == 4) {
-                                                        cc = "Drink";
-                                                    }
-                                                    System.out.print(">> Food name : ");
-                                                    String n = nm.nextLine();
-                                                    System.out.print(">> Recipe : ");
-                                                    String r = rc.nextLine();
-                                                    if (c > 4 || n.isEmpty() || r.isEmpty()) {
-                                                        clearScreen();
-                                                        invalid();
-                                                        break;
-                                                    } else {
-                                                        bw.newLine();
-                                                        bw.write(cc + "," + n + "," + r);
-                                                        clearScreen();
-                                                        System.out.println("Data written to the file successfully.");
-                                                        bw.close();
-                                                        obj = false;
-                                                    }
-                                                }
-                                                obj = true;
-                                                break;
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            }
-
-                                        case 2:
-                                            clearScreen();
-                                            viewAllRecipes();
-                                            System.out.println();
-                                            System.out.println(
-                                                    "##################################################################");
-                                            break;
-                                        case 3:
-                                            clearScreen();
-                                            Scanner ip = new Scanner(System.in);
-                                            System.out.print("Entry food name: ");
-                                            String ipName = ip.nextLine();
-                                            System.out.println();
-                                            searchRecipe(ipName);
-                                            break;
-                                        case 4:
-                                            clearScreen();
-                                            removeRecipe();
-                                            break;
-                                        case 5:
-                                            clearScreen();
-                                            editRecipe();
-                                            break;
-                                        case 6:
-                                            clearScreen();
-                                            System.exit(0);
-                                        default:
-                                            break;
-                                    }
-                                }
-                            } else if ("Viewer".equals(role)) {
-                                System.out.print("Hello " + user.getID());
-                                while (obj == true) {
-                                    System.out.print(
-                                            "\nChoose the option\n\n1.View recipe\n2.Scarch recipe\n3.Exit Program\n\n>>> ");
-                                    int input_switch2 = input.nextInt();
-                                    switch (input_switch2) {
-                                        case 1:
-                                            clearScreen();
-                                            viewAllRecipes();
-                                            System.out.println();
-                                            System.out.println(
-                                                    "##################################################################");
-                                            break;
-
-                                        case 2:
-                                            clearScreen();
-                                            Scanner ip = new Scanner(System.in);
-                                            System.out.print("Entry food name: ");
-                                            String ipName = ip.nextLine();
-                                            System.out.println();
-                                            searchRecipe(ipName);
-                                            break;
-                                        case 3:
-                                            clearScreen();
-                                            System.exit(0);
-                                        default:
-                                            break;
-                                    }
-                                }
+                            System.out.print(">> Role <<\n1.Creator\n2.Viewer\n>  ");
+                            char input_role = input.next().charAt(0);
+                            if (input_role == '1') {
+                                user.setRole("Creator");
+                            } else if (input_role == '2') {
+                                user.setRole("Viewer");
                             }
-                            obj = false;
-                            break;
-                        } else {
+                            if (input_user.isEmpty() && input_pass.isEmpty()) {
+                                System.out.print(
+                                        "\nPlease enter user & pass input try again.\n\nEnter for try again.\n");
+                                String sp = space.nextLine();
+                                clearScreen();
+                                continue;
+                            } else if (input_user.isEmpty()) {
+                                System.out.print(
+                                        "\nPlease enter user input try again.\n\nEnter for try again.\n");
+                                String sp = space.nextLine();
+                                clearScreen();
+                                continue;
+                            } else if (input_pass.isEmpty()) {
+                                System.out.print(
+                                        "\nPlease enter pass input try again.\n\nEnter for try again.\n");
+                                String sp = space.nextLine();
+                                clearScreen();
+                                continue;
+                            }
+                            if (register.isUsernameExists(input_user)) {
+                                clearScreen();
+                                System.out.println("Username already exists. Please choose a different username.\n");
+                                continue;
+                            }
+
                             clearScreen();
-                            System.out.println("Invalid username or password try again.");
-                            continue;
+                            register.registerAccount(input_user, input_pass, user.getRole());
+                            obj = false;
                         }
-                    }
-                    break;
-                // case 3
-                case 3:
-                    clearScreen();
-                    System.exit(0);
-                default:
-                    clearScreen();
-                    invalid();
+                        // case 2
+                    case '2':
+                        clearScreen();
+                        while (obj == true) {
+                            System.out.print(">> Login <<\nID : ");
+                            String input_user = ip_user.nextLine();
+                            user.setID(input_user);
+
+                            System.out.print("Pass : ");
+                            String input_pass = ip_pass.nextLine();
+                            user.setPass(input_pass);
+
+                            if (register.login(input_user, input_pass)) {
+                                clearScreen();
+                                System.out.println("Login successful!\n");
+                                String role = register.checkRole(input_user, input_pass);
+                                if ("Creator".equals(role)) {
+                                    System.out.print("Hello " + user.getID());
+                                    while (obj == true) {
+                                        System.out.print(
+                                                "\nChoose the option\n\n1.Add recipe\n2.View recipe\n3.Search recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
+                                        char input_switch2 = input.next().charAt(0);
+                                        if (input_switch2 == '1' || input_switch2 == '2' || input_switch2 == '3'
+                                                || input_switch2 == '4' || input_switch2 == '5'
+                                                || input_switch2 == '6') {
+                                            switch (input_switch2) {
+                                                case '1':
+                                                    clearScreen();
+                                                    scanner.nextLine();
+                                                    // Writing to the file
+                                                    try (BufferedWriter bw = new BufferedWriter(
+                                                            new FileWriter(file, true))) {
+                                                        while (obj == true) {
+                                                            Scanner ct = new Scanner(System.in);
+                                                            Scanner nm = new Scanner(System.in);
+                                                            Scanner rc = new Scanner(System.in);
+                                                            String cc = "";
+                                                            System.out.print(
+                                                                    "Choose Category\n1.Appetizer\n2.Main course\n3.Dessert\n4.Drink\n\n>> ");
+                                                            String c = ct.nextLine();
+                                                            if (c == "1") {
+                                                                cc = "Appetizer";
+                                                            } else if (c == "2") {
+                                                                cc = "Main course";
+                                                            } else if (c == "3") {
+                                                                cc = "Dessert";
+                                                            } else if (c == "4") {
+                                                                cc = "Drink";
+                                                            } else {
+                                                                clearScreen();
+                                                                invalid();
+                                                                continue;
+                                                            }
+                                                            System.out.print(">> Food name : ");
+                                                            String n = nm.nextLine();
+                                                            System.out.print(">> Recipe : ");
+                                                            String r = rc.nextLine();
+                                                            if (n.isEmpty() || r.isEmpty()) {
+                                                                clearScreen();
+                                                                invalid();
+                                                                continue;
+                                                            } else {
+                                                                bw.newLine();
+                                                                bw.write(cc + "," + n + "," + r);
+                                                                clearScreen();
+                                                                System.out.println(
+                                                                        "Data written to the file successfully.");
+                                                                bw.close();
+                                                                obj = false;
+                                                            }
+                                                        }
+                                                        obj = true;
+                                                        break;
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+
+                                                case '2':
+                                                    clearScreen();
+                                                    viewAllRecipes();
+                                                    System.out.println();
+                                                    System.out.println(
+                                                            "##################################################################");
+                                                    break;
+                                                case '3':
+                                                    clearScreen();
+                                                    Scanner ip = new Scanner(System.in);
+                                                    System.out.print("Entry food name: ");
+                                                    String ipName = ip.nextLine();
+                                                    System.out.println();
+                                                    searchRecipe(ipName);
+                                                    break;
+                                                case '4':
+                                                    clearScreen();
+                                                    removeRecipe();
+                                                    break;
+                                                case '5':
+                                                    clearScreen();
+                                                    editRecipe();
+                                                    break;
+                                                case '6':
+                                                    clearScreen();
+                                                    System.exit(0);
+                                                default:
+                                                    break;
+                                            }
+                                        } else {
+                                            clearScreen();
+                                            invalid();
+                                            continue;
+                                        }
+                                    }
+                                } else if ("Viewer".equals(role)) {
+                                    System.out.print("Hello " + user.getID());
+                                    while (obj == true) {
+                                        System.out.print(
+                                                "\nChoose the option\n\n1.View recipe\n2.Scarch recipe\n3.Exit Program\n\n>>> ");
+                                        char input_switch2 = input.next().charAt(0);
+                                        if (input_switch2 == '1' || input_switch2 == '2' || input_switch2 == '3') {
+                                            switch (input_switch2) {
+                                                case '1':
+                                                    clearScreen();
+                                                    viewAllRecipes();
+                                                    System.out.println();
+                                                    System.out.println(
+                                                            "##################################################################");
+                                                    break;
+
+                                                case '2':
+                                                    clearScreen();
+                                                    Scanner ip = new Scanner(System.in);
+                                                    System.out.print("Entry food name: ");
+                                                    String ipName = ip.nextLine();
+                                                    System.out.println();
+                                                    searchRecipe(ipName);
+                                                    break;
+                                                case '3':
+                                                    clearScreen();
+                                                    System.exit(0);
+                                                default:
+                                                    break;
+                                            }
+                                        } else {
+                                            clearScreen();
+                                            invalid();
+                                            continue;
+                                        }
+                                    }
+                                }
+                                obj = false;
+                                break;
+                            } else {
+                                clearScreen();
+                                System.out.println("Invalid username or password try again.");
+                                continue;
+                            }
+                        }
+                        break;
+                    // case 3
+                    case '3':
+                        clearScreen();
+                        System.exit(0);
+                    default:
+                        clearScreen();
+                        invalid();
+                }
+            else {
+                clearScreen();
+                invalid();
+                continue;
             }
         }
 
@@ -415,106 +445,120 @@ public class main {
             while (obj == true) {
                 System.out.print(
                         "\nChoose the option\n\n1.Add recipe\n2.View recipe\n3.Search recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
-                int input_switch2 = input.nextInt();
-                switch (input_switch2) {
-                    case 1:
-                        clearScreen();
-                        scanner.nextLine();
-                        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
-                            while (obj == true) {
-                                Scanner ct = new Scanner(System.in);
-                                Scanner nm = new Scanner(System.in);
-                                Scanner rc = new Scanner(System.in);
-                                String cc = "";
-                                System.out.print("Choose Category\n1.Appetizer\n2.Main course\n3.Dessert\n4.Drink\n\n>> ");
-                                int c = ct.nextInt();
-                                if (c == 1) {
-                                    cc = "Appetizer";
-                                } else if (c == 2) {
-                                    cc = "Main course";
-                                } else if (c == 3) {
-                                    cc = "Dessert";
-                                } else if (c == 4) {
-                                    cc = "Drink";
+                char input_switch2 = input.next().charAt(0);
+                if (input_switch2 == '1' || input_switch2 == '2' || input_switch2 == '3' || input_switch2 == '4'
+                        || input_switch2 == '5' || input_switch2 == '6') {
+                    switch (input_switch2) {
+                        case 1:
+                            clearScreen();
+                            scanner.nextLine();
+                            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
+                                while (obj == true) {
+                                    Scanner ct = new Scanner(System.in);
+                                    Scanner nm = new Scanner(System.in);
+                                    Scanner rc = new Scanner(System.in);
+                                    String cc = "";
+                                    System.out.print(
+                                            "Choose Category\n1.Appetizer\n2.Main course\n3.Dessert\n4.Drink\n\n>> ");
+                                    int c = ct.nextInt();
+                                    if (c == 1) {
+                                        cc = "Appetizer";
+                                    } else if (c == 2) {
+                                        cc = "Main course";
+                                    } else if (c == 3) {
+                                        cc = "Dessert";
+                                    } else if (c == 4) {
+                                        cc = "Drink";
+                                    }
+                                    System.out.print(">> Food name : ");
+                                    String n = nm.nextLine();
+                                    System.out.print(">> Recipe : ");
+                                    String r = rc.nextLine();
+                                    if (c > 4 || n.isEmpty() || r.isEmpty()) {
+                                        clearScreen();
+                                        invalid();
+                                        break;
+                                    } else {
+                                        bw.newLine();
+                                        bw.write(cc + "," + n + "," + r);
+                                        clearScreen();
+                                        System.out.println("Data written to the file successfully.");
+                                        bw.close();
+                                        obj = false;
+                                    }
                                 }
-                                System.out.print(">> Food name : ");
-                                String n = nm.nextLine();
-                                System.out.print(">> Recipe : ");
-                                String r = rc.nextLine();
-                                if (c > 4 || n.isEmpty() || r.isEmpty()) {
-                                    clearScreen();
-                                    invalid();
-                                    break;
-                                } else {
-                                    bw.newLine();
-                                    bw.write(cc + "," + n + "," + r);
-                                    clearScreen();
-                                    System.out.println("Data written to the file successfully.");
-                                    bw.close();
-                                    obj = false;
-                                }
+                                obj = true;
+                                break;
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
-                            obj = true;
-                            break;
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
 
-                    case 2:
-                        clearScreen();
-                        viewAllRecipes();
-                        System.out.println();
-                        System.out.println("##################################################################");
-                        break;
-                    case 3:
-                        clearScreen();
-                        Scanner ip = new Scanner(System.in);
-                        System.out.print("Entry food name: ");
-                        String ipName = ip.nextLine();
-                        System.out.println();
-                        searchRecipe(ipName);
-                        break;
-                    case 4:
-                        clearScreen();
-                        removeRecipe();
-                        break;
-                    case 5:
-                        clearScreen();
-                        editRecipe();
-                        break;
-                    case 6:
-                        clearScreen();
-                        System.exit(0);
-                    default:
-                        break;
+                        case 2:
+                            clearScreen();
+                            viewAllRecipes();
+                            System.out.println();
+                            System.out.println("##################################################################");
+                            break;
+                        case 3:
+                            clearScreen();
+                            Scanner ip = new Scanner(System.in);
+                            System.out.print("Entry food name: ");
+                            String ipName = ip.nextLine();
+                            System.out.println();
+                            searchRecipe(ipName);
+                            break;
+                        case 4:
+                            clearScreen();
+                            removeRecipe();
+                            break;
+                        case 5:
+                            clearScreen();
+                            editRecipe();
+                            break;
+                        case 6:
+                            clearScreen();
+                            System.exit(0);
+                        default:
+                            break;
+                    }
+                } else {
+                    clearScreen();
+                    invalid();
+                    continue;
                 }
             }
         } else if (user.getRole() == "Viewer") {
             System.out.print("Hello " + user.getID());
             while (obj == true) {
                 System.out.print("\nChoose the option\n\n1.View recipe\n2.Search recipe\n3.Exit Program\n\n>>> ");
-                int input_switch2 = input.nextInt();
-                switch (input_switch2) {
-                    case 1:
-                        clearScreen();
-                        viewAllRecipes();
-                        System.out.println();
-                        System.out.println("##################################################################");
-                        break;
+                char input_switch2 = input.next().charAt(0);
+                if (input_switch2 == '1' || input_switch2 == '2' || input_switch2 == '3') {
+                    switch (input_switch2) {
+                        case 1:
+                            clearScreen();
+                            viewAllRecipes();
+                            System.out.println();
+                            System.out.println("##################################################################");
+                            break;
 
-                    case 2:
-                        clearScreen();
-                        Scanner ip = new Scanner(System.in);
-                        System.out.print("Entry food name: ");
-                        String ipName = ip.nextLine();
-                        System.out.println();
-                        searchRecipe(ipName);
-                        break;
-                    case 3:
-                        clearScreen();
-                        System.exit(0);
-                    default:
-                        break;
+                        case 2:
+                            clearScreen();
+                            Scanner ip = new Scanner(System.in);
+                            System.out.print("Entry food name: ");
+                            String ipName = ip.nextLine();
+                            System.out.println();
+                            searchRecipe(ipName);
+                            break;
+                        case 3:
+                            clearScreen();
+                            System.exit(0);
+                        default:
+                            break;
+                    }
+                } else {
+                    clearScreen();
+                    invalid();
+                    continue;
                 }
             }
         }
