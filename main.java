@@ -2,6 +2,10 @@ import java.util.*;
 
 import javax.annotation.processing.FilerException;
 
+import obj.Recipe;
+import obj.Register;
+import obj.Student;
+
 import java.io.*;
 
 //Main class
@@ -25,7 +29,6 @@ public class main {
             System.err.println("Already have account.");
         }
     }
-
     public static void searchRecipe(String keyword) {
         try (BufferedReader br = new BufferedReader(new FileReader("data" + File.separator + "Recipe_Book.csv"))) {
             String line;
@@ -57,16 +60,16 @@ public class main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    
+
         if (recipes.isEmpty()) {
             System.out.println("No recipes found.");
             return;
         }
-    
+
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the keyword to search for:");
+        System.out.print("Enter the keyword to search for: ");
         String keyword = scanner.nextLine();
-    
+
         List<String> matchedRecipes = new ArrayList<>();
         for (String recipe : recipes) {
             String[] parts = recipe.split(",");
@@ -74,13 +77,13 @@ public class main {
                 matchedRecipes.add(recipe);
             }
         }
-    
+
         if (matchedRecipes.isEmpty()) {
             System.out.println("No recipes found for the keyword: " + keyword);
             return;
         }
-    
-        System.out.println("Select a recipe to edit:");
+
+        System.out.println("Select a recipe to edit: ");
         for (int i = 0; i < matchedRecipes.size(); i++) {
             System.out.println((i + 1) + ". " + matchedRecipes.get(i));
         }
@@ -91,13 +94,14 @@ public class main {
             System.out.println("Invalid choice.");
             return;
         }
-    
-        System.out.println("Enter the new recipe:");
+
+        System.out.println("Enter the new recipe: ");
         String newRecipe = scanner.nextLine();
-    
-        String editedRecipe = matchedRecipes.get(choice - 1).split(",")[0] + "," + matchedRecipes.get(choice - 1).split(",")[1] + "," + newRecipe;
+
+        String editedRecipe = matchedRecipes.get(choice - 1).split(",")[0] + ","
+                + matchedRecipes.get(choice - 1).split(",")[1] + "," + newRecipe;
         recipes.set(recipes.indexOf(matchedRecipes.get(choice - 1)), editedRecipe);
-    
+
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("data" + File.separator + "Recipe_Book.csv"))) {
             for (String updatedRecipe : recipes) {
                 bw.write(updatedRecipe);
@@ -122,6 +126,65 @@ public class main {
                     System.out.println();
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void removeRecipe() {
+        List<String> recipes = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("data" + File.separator + "Recipe_Book.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                recipes.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (recipes.isEmpty()) {
+            System.out.println("No recipes found.");
+            return;
+        }
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the keyword to search for: ");
+        String keyword = scanner.nextLine();
+
+        List<String> matchedRecipes = new ArrayList<>();
+        for (String recipe : recipes) {
+            String[] parts = recipe.split(",");
+            if (parts.length > 1 && parts[1].equalsIgnoreCase(keyword)) {
+                matchedRecipes.add(recipe);
+            }
+        }
+
+        if (matchedRecipes.isEmpty()) {
+            System.out.println("No recipes found for the keyword: " + keyword);
+            return;
+        }
+
+        System.out.println("Select a recipe to remove: ");
+        for (int i = 0; i < matchedRecipes.size(); i++) {
+            System.out.println((i + 1) + ". " + matchedRecipes.get(i));
+        }
+        System.out.print("Enter the number of the recipe to remove: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+        if (choice < 1 || choice > matchedRecipes.size()) {
+            System.out.println("Invalid choice.");
+            return;
+        }
+
+        recipes.remove(matchedRecipes.get(choice - 1));
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("data" + File.separator + "Recipe_Book.csv"))) {
+            for (String updatedRecipe : recipes) {
+                bw.write(updatedRecipe);
+                bw.newLine();
+            }
+            clearScreen();
+            System.out.println("Recipe removed successfully.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -153,11 +216,11 @@ public class main {
                 case 1:
                     clearScreen();
                     while (obj == true) {
-                        System.out.print(">> Register <<\nID :");
+                        System.out.print(">> Register <<\nID : ");
                         String input_user = ip_user.nextLine();
                         user.setID(input_user);
 
-                        System.out.print("Pass :");
+                        System.out.print("Pass : ");
                         String input_pass = ip_pass.nextLine();
                         user.setPass(input_pass);
                         clearScreen();
@@ -170,17 +233,20 @@ public class main {
                             user.setRole("Viewer");
                         }
                         if (input_user.isEmpty() && input_pass.isEmpty()) {
-                            System.out.print("\nPlease enter user & pass input try again.\n\nEnter x for try again.\n");
+                            System.out.print("\nPlease enter user & pass input try again.\n\nPress any key for try again.\n");
                             String sp = space.nextLine();
                             clearScreen();
+                            continue;
                         } else if (input_user.isEmpty()) {
-                            System.out.print("\nPlease enter user input try again.\n\nEnter x for try again.\n");
+                            System.out.print("\nPlease enter user input try again.\n\nPress any key for try again.\n");
                             String sp = space.nextLine();
                             clearScreen();
+                            continue;
                         } else if (input_pass.isEmpty()) {
-                            System.out.print("\nPlease enter pass input try again.\n\nEnter x for try again.\n");
+                            System.out.print("\nPlease enter pass input try again.\n\nPress any key for try again.\n");
                             String sp = space.nextLine();
                             clearScreen();
+                            continue;
                         }
                         if (register.isUsernameExists(input_user)) {
                             clearScreen();
@@ -191,17 +257,16 @@ public class main {
                         clearScreen();
                         register.registerAccount(input_user, input_pass, user.getRole());
                         obj = false;
-
                     }
                     // case 2
                 case 2:
                     clearScreen();
                     while (obj == true) {
-                        System.out.print(">> Login <<\nID :");
+                        System.out.print(">> Login <<\nID : ");
                         String input_user = ip_user.nextLine();
                         user.setID(input_user);
 
-                        System.out.print("Pass :");
+                        System.out.print("Pass : ");
                         String input_pass = ip_pass.nextLine();
                         user.setPass(input_pass);
 
@@ -213,7 +278,7 @@ public class main {
                                 System.out.print("Hello " + user.getID());
                                 while (obj == true) {
                                     System.out.print(
-                                            "\nChoose the option\n\n1.Add recipe\n2.View recipe\n3.Scarch recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
+                                            "\nChoose the option\n\n1.Add recipe\n2.View recipe\n3.Search recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
                                     int input_switch2 = input.nextInt();
                                     switch (input_switch2) {
                                         case 1:
@@ -226,8 +291,8 @@ public class main {
                                                     Scanner nm = new Scanner(System.in);
                                                     Scanner rc = new Scanner(System.in);
                                                     String cc = "";
-                                                    System.out.println(
-                                                            "Choose Category\n1.Appetizer\n2.Main course\n3.Dessert\n4.Drink");
+                                                    System.out.print(
+                                                            "Choose Category\n1.Appetizer\n2.Main course\n3.Dessert\n4.Drink\n\n>> ");
                                                     int c = ct.nextInt();
                                                     if (c == 1) {
                                                         cc = "Appetizer";
@@ -238,9 +303,9 @@ public class main {
                                                     } else if (c == 4) {
                                                         cc = "Drink";
                                                     }
-                                                    System.out.print(">> Food name :");
+                                                    System.out.print(">> Food name : ");
                                                     String n = nm.nextLine();
-                                                    System.out.print(">> Recipe :");
+                                                    System.out.print(">> Recipe : ");
                                                     String r = rc.nextLine();
                                                     if (c > 4 || n.isEmpty() || r.isEmpty()) {
                                                         clearScreen();
@@ -250,7 +315,7 @@ public class main {
                                                         bw.newLine();
                                                         bw.write(cc + "," + n + "," + r);
                                                         clearScreen();
-                                                        System.out.println("Data written to the file successfully.\n");
+                                                        System.out.println("Data written to the file successfully.");
                                                         bw.close();
                                                         obj = false;
                                                     }
@@ -271,11 +336,14 @@ public class main {
                                         case 3:
                                             clearScreen();
                                             Scanner ip = new Scanner(System.in);
-                                            System.out.print("Entry food name.");
+                                            System.out.print("Entry food name: ");
                                             String ipName = ip.nextLine();
+                                            System.out.println();
                                             searchRecipe(ipName);
                                             break;
                                         case 4:
+                                            clearScreen();
+                                            removeRecipe();
                                             break;
                                         case 5:
                                             clearScreen();
@@ -306,8 +374,9 @@ public class main {
                                         case 2:
                                             clearScreen();
                                             Scanner ip = new Scanner(System.in);
-                                            System.out.print("Entry food name.");
+                                            System.out.print("Entry food name: ");
                                             String ipName = ip.nextLine();
+                                            System.out.println();
                                             searchRecipe(ipName);
                                             break;
                                         case 3:
@@ -345,20 +414,19 @@ public class main {
             System.out.print("Hello " + user.getID());
             while (obj == true) {
                 System.out.print(
-                        "\nChoose the option\n\n1.Add recipe\n2.View recipe\n3.Scarch recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
+                        "\nChoose the option\n\n1.Add recipe\n2.View recipe\n3.Search recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
                 int input_switch2 = input.nextInt();
                 switch (input_switch2) {
                     case 1:
                         clearScreen();
                         scanner.nextLine();
-                        // Writing to the file
                         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
                             while (obj == true) {
                                 Scanner ct = new Scanner(System.in);
                                 Scanner nm = new Scanner(System.in);
                                 Scanner rc = new Scanner(System.in);
                                 String cc = "";
-                                System.out.println("Choose Category\n1.Appetizer\n2.Main course\n3.Dessert\n4.Drink");
+                                System.out.print("Choose Category\n1.Appetizer\n2.Main course\n3.Dessert\n4.Drink\n\n>> ");
                                 int c = ct.nextInt();
                                 if (c == 1) {
                                     cc = "Appetizer";
@@ -369,9 +437,9 @@ public class main {
                                 } else if (c == 4) {
                                     cc = "Drink";
                                 }
-                                System.out.print(">> Food name :");
+                                System.out.print(">> Food name : ");
                                 String n = nm.nextLine();
-                                System.out.print(">> Recipe :");
+                                System.out.print(">> Recipe : ");
                                 String r = rc.nextLine();
                                 if (c > 4 || n.isEmpty() || r.isEmpty()) {
                                     clearScreen();
@@ -381,7 +449,7 @@ public class main {
                                     bw.newLine();
                                     bw.write(cc + "," + n + "," + r);
                                     clearScreen();
-                                    System.out.println("Data written to the file successfully.\n");
+                                    System.out.println("Data written to the file successfully.");
                                     bw.close();
                                     obj = false;
                                 }
@@ -401,11 +469,15 @@ public class main {
                     case 3:
                         clearScreen();
                         Scanner ip = new Scanner(System.in);
-                        System.out.print("Entry food name.");
+                        System.out.print("Entry food name: ");
                         String ipName = ip.nextLine();
+                        System.out.println();
                         searchRecipe(ipName);
                         break;
                     case 4:
+                        clearScreen();
+                        removeRecipe();
+                        break;
                     case 5:
                         clearScreen();
                         editRecipe();
@@ -420,7 +492,7 @@ public class main {
         } else if (user.getRole() == "Viewer") {
             System.out.print("Hello " + user.getID());
             while (obj == true) {
-                System.out.print("\nChoose the option\n\n1.View recipe\n2.Scarch recipe\n3.Exit Program\n\n>>> ");
+                System.out.print("\nChoose the option\n\n1.View recipe\n2.Search recipe\n3.Exit Program\n\n>>> ");
                 int input_switch2 = input.nextInt();
                 switch (input_switch2) {
                     case 1:
@@ -433,8 +505,9 @@ public class main {
                     case 2:
                         clearScreen();
                         Scanner ip = new Scanner(System.in);
-                        System.out.print("Entry food name.");
+                        System.out.print("Entry food name: ");
                         String ipName = ip.nextLine();
+                        System.out.println();
                         searchRecipe(ipName);
                         break;
                     case 3:
