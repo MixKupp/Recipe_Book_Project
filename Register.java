@@ -34,12 +34,31 @@ public class Register {
     }
 
     public void registerAccount(String username, String password, String role) {
-        if (accounts.stream().anyMatch(account -> account.getID().equals(username))) {
+        List<String> existingUsernames = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("data" + File.separator + "Account_ID.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length > 0) {
+                    existingUsernames.add(parts[0]); // Assuming username is in the first column
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    
+        if (existingUsernames.contains(username)) {
             System.out.println("Username already exists. Please choose a different username.");
-        } else {
-            accounts.add(new Student(username, password));
-            writeAccountToCSV(username, password, role);
+            return; // Exit the method
+        }
+    
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("data" + File.separator + "Account_ID.csv", true))) {
+            bw.write(username + "," + password + "," + role);
+            bw.newLine();
             System.out.println("Account registered successfully for username: " + username);
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -55,5 +74,29 @@ public class Register {
     public boolean login(String username, String password) {
         return accounts.stream().anyMatch(account -> account.getID().equals(username)
                 && account.getPass().equals(password));
+    }
+
+    public String checkRole(String username, String password) {
+        for (Student account : accounts) {
+            if (account.getID().equals(username) && account.getPass().equals(password)) {
+                return account.getRole();
+            }
+        }
+        return null;
+    }
+
+    public boolean isUsernameExists(String username) {
+        try (BufferedReader br = new BufferedReader(new FileReader("data" + File.separator + "Account_ID.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length > 0 && parts[0].equals(username)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
