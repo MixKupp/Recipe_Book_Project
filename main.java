@@ -28,7 +28,7 @@ public class main {
                 Scanner rc = new Scanner(System.in);
     
                 System.out.print(
-                    ">> Choose Category <<\n1.Appetizer\n2.Main course\n3.Dessert\n4.Drink\n\n>> ");
+                    ">> Choose Category <<\n1.Appetizer\n2.Main course\n3.Dessert\n4.Drink\n\n>> Choose:  ");
                 String c = ct.nextLine();
                 String cc = "";
                 switch (c) {
@@ -45,16 +45,14 @@ public class main {
                         cc = "Drink";
                         break;
                     default:
-                        clearScreen();
-                        invalid();
-                        continue;
+                        break;
                 }
     
                 System.out.print(">> Food name : ");
                 String n = nm.nextLine();
-                System.out.print(">> Recipe : ");
+                System.out.print(">> Recipe    : ");
                 String r = rc.nextLine();
-                if (n.isEmpty() || r.isEmpty()) {
+                if (n.isEmpty() || r.isEmpty() || c.isEmpty()) {
                     clearScreen();
                     invalid();
                     continue;
@@ -82,16 +80,16 @@ public class main {
         }
     }
 
-    public static void searchRecipe(String keyword) {
+    public static void searchRecipe(String input) {
         try (BufferedReader br = new BufferedReader(new FileReader("data" + File.separator + "Recipe_Book.csv"))) {
             String line;
             boolean found = false;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length > 0 && (parts[1].contains(keyword) || parts[1].matches(".*\\b" + keyword + "\\b.*"))) {
+                if (parts.length > 0 && (parts[1].toLowerCase().contains(input.toLowerCase()))) {
                     System.out.println("Category: " + parts[0]);
                     System.out.println("Name: " + parts[1]);
-                    System.out.println("Recipe: " + "\n     "+parts[2] + "\n");
+                    System.out.println("Recipe: "+parts[2]);
                     found = true;
                 }
             }
@@ -120,7 +118,7 @@ public class main {
         }
 
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the keyword to search for: ");
+        System.out.print("Enter the food name to search: ");
         String keyword = scanner.nextLine();
 
         List<String> matchedRecipes = new ArrayList<>();
@@ -132,15 +130,15 @@ public class main {
         }
 
         if (matchedRecipes.isEmpty()) {
-            System.out.println("No recipes found for the keyword: " + keyword);
+            System.out.println("No recipes found: " + keyword);
             return;
         }
 
-        System.out.println("Select a recipe to edit: ");
+        System.out.println("\nSelect a recipe to edit: ");
         for (int i = 0; i < matchedRecipes.size(); i++) {
-            System.out.println((i + 1) + ". " + matchedRecipes.get(i));
+            System.out.println("  "+(i + 1) + ". " + matchedRecipes.get(i));
         }
-        System.out.print("Enter the number of the recipe to edit: ");
+        System.out.print("\nEnter the number of the recipe to edit: ");
         int choice = scanner.nextInt();
         scanner.nextLine(); // Consume newline
         if (choice < 1 || choice > matchedRecipes.size()) {
@@ -148,7 +146,7 @@ public class main {
             return;
         }
 
-        System.out.println("Enter the new recipe: ");
+        System.out.print("Enter the new recipe: ");
         String newRecipe = scanner.nextLine();
 
         String editedRecipe = matchedRecipes.get(choice - 1).split(",")[0] + ","
@@ -202,7 +200,7 @@ public class main {
         }
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the keyword to search for: ");
+        System.out.print("Enter the food name to search for: ");
         String keyword = scanner.nextLine();
 
         List<String> matchedRecipes = new ArrayList<>();
@@ -263,6 +261,16 @@ public class main {
         Scanner space = new Scanner(System.in);
 
         while (obj == true) {
+            System.out.println("\r\n" + //
+                                "______          _             ______             _    \r\n" + //
+                                "| ___ \\        (_)            | ___ \\           | |   \r\n" + //
+                                "| |_/ /___  ___ _ _ __   ___  | |_/ / ___   ___ | | __\r\n" + //
+                                "|    // _ \\/ __| | '_ \\ / _ \\ | ___ \\/ _ \\ / _ \\| |/ /\r\n" + //
+                                "| |\\ |  __| (__| | |_) |  __/ | |_/ | (_) | (_) |   < \r\n" + //
+                                "\\_| \\_\\___|\\___|_| .__/ \\___| \\____/ \\___/ \\___/|_|\\_\\\r\n" + //
+                                "                 | |                                  \r\n" + //
+                                "                 |_|                                  \r\n" + //
+                                "");
             System.out.print("Welcome To Recipe Book Program.\n1.Register.\n2.Login.\n3.Exit.\n\n> ");
             char input_switch1 = input.next().charAt(0);
             if (input_switch1 == '1' || input_switch1 == '2' || input_switch1 == '3')
@@ -278,9 +286,9 @@ public class main {
                             System.out.print("Pass : ");
                             String input_pass = ip_pass.nextLine();
                             user.setPass(input_pass);
-                            clearScreen();
-
-                            System.out.print(">> Role <<\n1.Creator\n2.Viewer\n>  ");
+                            System.out.println(" ");
+                            System.out.print(">> Role <<\n1.Creator\n2.Viewer\n  ");
+                            System.out.print("\nEnter role: ");
                             char input_role = input.next().charAt(0);
                             if (input_role == '1') {
                                 user.setRole("Creator");
@@ -311,10 +319,9 @@ public class main {
                                 System.out.println("Username already exists. Please choose a different username.\n");
                                 continue;
                             }
-
                             clearScreen();
                             register.registerAccount(input_user, input_pass, user.getRole());
-                            obj = false;
+                            obj =false;
                         }
                         // case 2
                     case '2':
@@ -336,7 +343,7 @@ public class main {
                                     System.out.print("Hello " + user.getID());
                                     while (obj == true) {
                                         System.out.print(
-                                                "\n>> Choose the option <<\n\n1.Add recipe\n2.View recipe\n3.Search recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
+                                                "\n\n>> Choose the option <<\n\n1.Add recipe\n2.View recipe\n3.Search recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\nChoose:  ");
                                         char input_switch2 = input.next().charAt(0);
                                         if (input_switch2 == '1' || input_switch2 == '2' || input_switch2 == '3'
                                                 || input_switch2 == '4' || input_switch2 == '5'
@@ -350,9 +357,6 @@ public class main {
                                                 case '2':
                                                     clearScreen();
                                                     viewAllRecipes();
-                                                    System.out.println();
-                                                    System.out.println(
-                                                            "##################################################################");
                                                     break;
                                                 case '3':
                                                     clearScreen();
@@ -386,7 +390,7 @@ public class main {
                                     System.out.print("Hello " + user.getID());
                                     while (obj == true) {
                                         System.out.print(
-                                                "\n>> Choose the option <<\n\n1.View recipe\n2.Scarch recipe\n3.Exit Program\n\n>>> ");
+                                                "\n>> Choose the option <<\n\n1.View recipe\n2.Scarch recipe\n3.Exit Program\n\nChoose:  ");
                                         char input_switch2 = input.next().charAt(0);
                                         if (input_switch2 == '1' || input_switch2 == '2' || input_switch2 == '3') {
                                             switch (input_switch2) {
@@ -401,7 +405,7 @@ public class main {
                                                 case '2':
                                                     clearScreen();
                                                     Scanner ip = new Scanner(System.in);
-                                                    System.out.print("Entry food name: ");
+                                                    System.out.print("Enter food name: ");
                                                     String ipName = ip.nextLine();
                                                     System.out.println();
                                                     searchRecipe(ipName);
@@ -451,7 +455,7 @@ public class main {
             System.out.print("Hello " + user.getID());
             while (obj == true) {
                 System.out.print(
-                        "\n>> Choose the option <<\n\n1.Add recipe\n2.View recipe\n3.Search recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
+                        "\n>> Choose the option <<\n\n1.Add recipe\n2.View recipe\n3.Search recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\nChoose:  ");
                 char input_switch2 = input.next().charAt(0);
                 if (input_switch2 == '1' || input_switch2 == '2' || input_switch2 == '3' || input_switch2 == '4'
                         || input_switch2 == '5' || input_switch2 == '6') {
@@ -464,8 +468,6 @@ public class main {
                         case 2:
                             clearScreen();
                             viewAllRecipes();
-                            System.out.println();
-                            System.out.println("##################################################################");
                             break;
                         case 3:
                             clearScreen();
@@ -498,15 +500,13 @@ public class main {
         } else if (user.getRole() == "Viewer") {
             System.out.print("Hello " + user.getID());
             while (obj == true) {
-                System.out.print("\n>> Choose the option <<\n\n1.View recipe\n2.Search recipe\n3.Exit Program\n\n>>> ");
+                System.out.print("\n>> Choose the option <<\n\n1.View recipe\n2.Search recipe\n3.Exit Program\n\nChoose:  ");
                 char input_switch2 = input.next().charAt(0);
                 if (input_switch2 == '1' || input_switch2 == '2' || input_switch2 == '3') {
                     switch (input_switch2) {
                         case 1:
                             clearScreen();
                             viewAllRecipes();
-                            System.out.println();
-                            System.out.println("##################################################################");
                             break;
 
                         case 2:
@@ -520,6 +520,7 @@ public class main {
                         case 3:
                             clearScreen();
                             System.exit(0);
+                            break;
                         default:
                             break;
                     }
