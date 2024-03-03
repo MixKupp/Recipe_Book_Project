@@ -28,7 +28,7 @@ public class main {
                 Scanner rc = new Scanner(System.in);
     
                 System.out.print(
-                    "Choose Category\n1.Appetizer\n2.Main course\n3.Dessert\n4.Drink\n\n>> ");
+                    ">> Choose Category <<\n1.Appetizer\n2.Main course\n3.Dessert\n4.Drink\n\n>> ");
                 String c = ct.nextLine();
                 String cc = "";
                 switch (c) {
@@ -91,7 +91,7 @@ public class main {
                 if (parts.length > 0 && (parts[1].contains(keyword) || parts[1].matches(".*\\b" + keyword + "\\b.*"))) {
                     System.out.println("Category: " + parts[0]);
                     System.out.println("Name: " + parts[1]);
-                    System.out.println("Recipe: " + parts[2] + "\n");
+                    System.out.println("Recipe: " + "\n     "+parts[2] + "\n");
                     found = true;
                 }
             }
@@ -170,13 +170,14 @@ public class main {
     public static void viewAllRecipes() {
         try (BufferedReader br = new BufferedReader(new FileReader("data" + File.separator + "Recipe_Book.csv"))) {
             String line;
+            System.out.println("------------------------------------");
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length > 2) {
                     System.out.println("Category: " + parts[0]);
-                    System.out.println("Name: " + parts[1]);
-                    System.out.println("Recipe: " + parts[2]);
-                    System.out.println();
+                    System.out.println("Name    : " + parts[1]);
+                    System.out.println("Recipe  : " + parts[2]);
+                    System.out.println("------------------------------------");
                 }
             }
         } catch (IOException e) {
@@ -335,7 +336,7 @@ public class main {
                                     System.out.print("Hello " + user.getID());
                                     while (obj == true) {
                                         System.out.print(
-                                                "\nChoose the option\n\n1.Add recipe\n2.View recipe\n3.Search recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
+                                                "\n>> Choose the option <<\n\n1.Add recipe\n2.View recipe\n3.Search recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
                                         char input_switch2 = input.next().charAt(0);
                                         if (input_switch2 == '1' || input_switch2 == '2' || input_switch2 == '3'
                                                 || input_switch2 == '4' || input_switch2 == '5'
@@ -385,7 +386,7 @@ public class main {
                                     System.out.print("Hello " + user.getID());
                                     while (obj == true) {
                                         System.out.print(
-                                                "\nChoose the option\n\n1.View recipe\n2.Scarch recipe\n3.Exit Program\n\n>>> ");
+                                                "\n>> Choose the option <<\n\n1.View recipe\n2.Scarch recipe\n3.Exit Program\n\n>>> ");
                                         char input_switch2 = input.next().charAt(0);
                                         if (input_switch2 == '1' || input_switch2 == '2' || input_switch2 == '3') {
                                             switch (input_switch2) {
@@ -450,7 +451,7 @@ public class main {
             System.out.print("Hello " + user.getID());
             while (obj == true) {
                 System.out.print(
-                        "\nChoose the option\n\n1.Add recipe\n2.View recipe\n3.Search recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
+                        "\n>> Choose the option <<\n\n1.Add recipe\n2.View recipe\n3.Search recipe\n4.Remove recipe\n5.Edit recipe\n6.Exit Program\n\n>>> ");
                 char input_switch2 = input.next().charAt(0);
                 if (input_switch2 == '1' || input_switch2 == '2' || input_switch2 == '3' || input_switch2 == '4'
                         || input_switch2 == '5' || input_switch2 == '6') {
@@ -497,7 +498,7 @@ public class main {
         } else if (user.getRole() == "Viewer") {
             System.out.print("Hello " + user.getID());
             while (obj == true) {
-                System.out.print("\nChoose the option\n\n1.View recipe\n2.Search recipe\n3.Exit Program\n\n>>> ");
+                System.out.print("\n>> Choose the option <<\n\n1.View recipe\n2.Search recipe\n3.Exit Program\n\n>>> ");
                 char input_switch2 = input.next().charAt(0);
                 if (input_switch2 == '1' || input_switch2 == '2' || input_switch2 == '3') {
                     switch (input_switch2) {
