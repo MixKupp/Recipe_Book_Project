@@ -212,7 +212,7 @@ public class main {
         }
 
         if (matchedRecipes.isEmpty()) {
-            System.out.println("No recipes found for the keyword: " + keyword);
+            System.out.println("No recipes found for the food name: " + keyword);
             return;
         }
 
@@ -323,6 +323,7 @@ public class main {
                             register.registerAccount(input_user, input_pass, user.getRole());
                             obj =false;
                         }
+                        continue;
                         // case 2
                     case '2':
                         clearScreen();
@@ -351,7 +352,6 @@ public class main {
                                             switch (input_switch2) {
                                                 case '1':
                                                     clearScreen();
-                                                    scanner.nextLine();
                                                     Addrecipe();
                                                     break;
                                                 case '2':
@@ -460,16 +460,16 @@ public class main {
                 if (input_switch2 == '1' || input_switch2 == '2' || input_switch2 == '3' || input_switch2 == '4'
                         || input_switch2 == '5' || input_switch2 == '6') {
                     switch (input_switch2) {
-                        case 1:
+                        case '1':
                             clearScreen();
                             scanner.nextLine();
                             Addrecipe();
                             break;
-                        case 2:
+                        case '2':
                             clearScreen();
                             viewAllRecipes();
                             break;
-                        case 3:
+                        case '3':
                             clearScreen();
                             Scanner ip = new Scanner(System.in);
                             System.out.print("Entry food name: ");
@@ -477,15 +477,15 @@ public class main {
                             System.out.println();
                             searchRecipe(ipName);
                             break;
-                        case 4:
+                        case '4':
                             clearScreen();
                             removeRecipe();
                             break;
-                        case 5:
+                        case '5':
                             clearScreen();
                             editRecipe();
                             break;
-                        case 6:
+                        case '6':
                             clearScreen();
                             System.exit(0);
                         default:
@@ -504,12 +504,12 @@ public class main {
                 char input_switch2 = input.next().charAt(0);
                 if (input_switch2 == '1' || input_switch2 == '2' || input_switch2 == '3') {
                     switch (input_switch2) {
-                        case 1:
+                        case '1':
                             clearScreen();
                             viewAllRecipes();
                             break;
 
-                        case 2:
+                        case '2':
                             clearScreen();
                             Scanner ip = new Scanner(System.in);
                             System.out.print("Entry food name: ");
@@ -517,7 +517,7 @@ public class main {
                             System.out.println();
                             searchRecipe(ipName);
                             break;
-                        case 3:
+                        case '3':
                             clearScreen();
                             System.exit(0);
                             break;
